@@ -21,6 +21,7 @@ import dev.ibu.wishbucket.R;
 public class MainActivity extends AppCompatActivity {
     private LoginButton mLoginButton;
     private CallbackManager mCallbackManager;
+    public AccessToken accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +31,15 @@ public class MainActivity extends AppCompatActivity {
         mLoginButton = (LoginButton) findViewById(R.id.btnLogin);
 
         //set required fields from facebook api
-        mLoginButton.setReadPermissions("email");
+        mLoginButton.setReadPermissions("email, user_friends");
 
         mCallbackManager = CallbackManager.Factory.create();
-
 
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 //get access token
-                AccessToken accessToken = loginResult.getAccessToken();
+                accessToken = loginResult.getAccessToken();
             }
 
             @Override
