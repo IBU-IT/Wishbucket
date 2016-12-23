@@ -3,5 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">281281625602147</string>
     <string name="title_activity_home">Home</string>
+    <string name="title_wishbucket">Wishbucket</string>
+    <string name="message_gift">Gift. Be gifted.</string>
 
 </resources>
