@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         mLoginButton = (LoginButton) findViewById(R.id.btnLogin);
 
         //set required fields from facebook api
-        mLoginButton.setReadPermissions("email, user_friends");
+        mLoginButton.setReadPermissions("email");
 
         mCallbackManager = CallbackManager.Factory.create();
 
