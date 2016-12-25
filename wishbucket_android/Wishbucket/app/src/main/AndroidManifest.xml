@@ -35,6 +35,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.ibu.wishbucket.views.activities.MainActivity" />
         </activity>
+        <activity
+            android:name=".views.activities.RecommendationActivity"
+            android:label="@string/title_activity_recommendation"
+            android:parentActivityName=".views.activities.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="dev.ibu.wishbucket.views.activities.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>
