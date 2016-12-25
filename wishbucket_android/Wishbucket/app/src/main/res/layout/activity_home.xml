@@ -21,7 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_home"
-        android:id="@+id/open_recommendation_button" />
+    <include layout="@layout/content_home" />
 
 </android.support.design.widget.CoordinatorLayout>
