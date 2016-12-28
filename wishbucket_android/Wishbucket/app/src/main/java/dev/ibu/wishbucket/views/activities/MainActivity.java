@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(Profile.getCurrentProfile().getId()!=null){
+        if(Profile.getCurrentProfile()!=null){
             Intent intent = new Intent(MainActivity.this, RecommendationActivity.class);
             intent.putExtra(ACCESS_TOKEN_KEY, AccessToken.getCurrentAccessToken());
             startActivity(intent);

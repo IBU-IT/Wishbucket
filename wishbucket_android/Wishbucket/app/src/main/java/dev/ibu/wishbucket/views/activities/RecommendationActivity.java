@@ -20,6 +20,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import dev.ibu.wishbucket.R;
 
 public class RecommendationActivity extends AppCompatActivity {
@@ -39,9 +41,10 @@ public class RecommendationActivity extends AppCompatActivity {
             JSONObject games = interests.getJSONObject("games");
 
             RecommendationProvider rp = new RecommendationProvider();
+
             rp.getBookRecommendations(books);
             rp.getMovieRecommendations(movies);
-            rp.getGameRecommendations(games);
+            ArrayList<String> gameRecomendations =  rp.getGameRecommendations(games);
 
         } catch (JSONException e) {
             e.printStackTrace();
