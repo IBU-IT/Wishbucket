@@ -49,8 +49,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        if (accessToken == null)
-            finish();
+        //if (accessToken == null)
+         //   finish();
     }
 
     private void callApi() {
