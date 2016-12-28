@@ -1,6 +1,7 @@
 package dev.ibu.wishbucket.views;
 
 import android.app.Application;
+import android.hardware.camera2.params.Face;
 
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
@@ -16,6 +17,7 @@ public class WishBucketApp extends Application {
         FacebookSdk.sdkInitialize(this);
         FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_RAW_RESPONSES);
         FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS);
+        FacebookSdk.setIsDebugEnabled(true);
         FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
     }
 }

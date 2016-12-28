@@ -13,6 +13,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -33,10 +35,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(Profile.getCurrentProfile().getId()!=null){
+            Intent intent = new Intent(MainActivity.this, RecommendationActivity.class);
+            intent.putExtra(ACCESS_TOKEN_KEY, AccessToken.getCurrentAccessToken());
+            startActivity(intent);
+        }
+
         mLoginButton = (LoginButton) findViewById(R.id.btnLogin);
 
         //set required fields from facebook api
-        mLoginButton.setReadPermissions("email", "user_birthday", "user_friends");
+        mLoginButton.setReadPermissions("email", "user_birthday", "user_friends", "user_likes");
 
         mCallbackManager = CallbackManager.Factory.create();
 
@@ -58,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 //get access token
                 accessToken = loginResult.getAccessToken();
-
+                Log.d("STUFF", accessToken.toString());
                 Intent intent = new Intent(MainActivity.this, RecommendationActivity.class);
                 intent.putExtra(ACCESS_TOKEN_KEY, accessToken);
                 startActivity(intent);
