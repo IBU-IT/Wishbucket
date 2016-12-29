@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if(Profile.getCurrentProfile()!=null){
-            Intent intent = new Intent(MainActivity.this, RecommendationActivity.class);
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             intent.putExtra(ACCESS_TOKEN_KEY, AccessToken.getCurrentAccessToken());
             startActivity(intent);
         }
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 //get access token
                 accessToken = loginResult.getAccessToken();
                 Log.d("STUFF", accessToken.toString());
-                Intent intent = new Intent(MainActivity.this, RecommendationActivity.class);
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                 intent.putExtra(ACCESS_TOKEN_KEY, accessToken);
                 startActivity(intent);
             }
