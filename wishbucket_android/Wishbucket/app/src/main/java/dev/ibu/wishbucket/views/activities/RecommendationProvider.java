@@ -24,12 +24,14 @@ public class RecommendationProvider {
         try {
             JSONArray interestsData = gameInterests.getJSONArray("data");
 
+            int length  = interestsData.length()>5? 5:interestsData.length();
+
             for (int i = 0; i < interestsData.length(); i++) {
                 JSONObject currentInterest = interestsData.getJSONObject(i);
 
                 String currentInterestName = currentInterest.getString("name");
 
-                String url = "https://www.tastekid.com/api/similar?k=253220-Wishbuck-AGREMPPW&type=" + type + "&q=";
+                String url = "https://www.tastekid.com/api/similar?k=253261-required-7XUPJKM2&type=" + type + "&q=";
 
                 currentInterestName = currentInterestName.replace(" ", "+");
                 url += currentInterestName;

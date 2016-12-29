@@ -1,6 +1,7 @@
 package dev.ibu.wishbucket.views.activities;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,15 +21,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import dev.ibu.wishbucket.R;
+import dev.ibu.wishbucket.tasks.FetchImageTask;
 import dev.ibu.wishbucket.tasks.SearchTask;
 
-public class RecommendationActivity extends AppCompatActivity implements SearchTask.OnSearchTaskFinished {
+public class RecommendationActivity extends AppCompatActivity implements SearchTask.OnSearchTaskFinished, FetchImageTask.OnFetchImageTaskFinished {
 
     private AccessToken accessToken;
     private SearchTask mSearchTask;
+    private FetchImageTask mFetchImageTask;
+    public static ArrayList<ArrayList<String>> allInterests;
 
     private void setUpProfilePicture(){
         ProfilePictureView profilePictureView;
@@ -39,14 +45,14 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
     private void parseJSONInterests(JSONObject interests){
         try {
             JSONObject books = interests.getJSONObject("books");
-//            JSONObject movies = interests.getJSONObject("movies");
-//            JSONObject games = interests.getJSONObject("games");
+            JSONObject movies = interests.getJSONObject("movies");
+            JSONObject games = interests.getJSONObject("games");
 
             RecommendationProvider rp = new RecommendationProvider();
 
             rp.getRecommendations("books", books, this);
-//            rp.getRecommendations("movies", movies, this);
-//            rp.getRecommendations("games", games, this);
+            rp.getRecommendations("movies", movies, this);
+            rp.getRecommendations("games", games, this);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -55,7 +61,7 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
 
     private void getUserInterests(String userId){
         GraphRequest.newGraphPathRequest(accessToken,
-                userId+"?fields=books,movies,games",
+                userId+"?fields=books,movies,games&limit=5",
                 new GraphRequest.Callback(){
 
                     @Override
@@ -75,12 +81,29 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
         accessToken = intent.getParcelableExtra(MainActivity.ACCESS_TOKEN_KEY);
     }
 
+    public static Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "");
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private void fetchImages(){
+        ImageProvider ip= new ImageProvider();
+        ip.getImages(allInterests, this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        allInterests = new ArrayList<ArrayList<String>>();
 
         getAccessToken();
         setUpProfilePicture();
@@ -93,11 +116,22 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
     protected void onDestroy() {
         super.onDestroy();
         mSearchTask.cancel();
+        mFetchImageTask.cancel();
+    }
+
+    @Override
+    public void onImageSuccess(String[] images){
+        if(images!=null)
+            Log.d("IMAGES!", "Interest: "+images[0]+" URL: "+images[1]);
     }
 
     @Override
     public void onSuccess(ArrayList<String> interests) {
+        allInterests.add(interests);
 
+        if(allInterests.size() == 15) {
+            fetchImages();
+        }
 
     }
 

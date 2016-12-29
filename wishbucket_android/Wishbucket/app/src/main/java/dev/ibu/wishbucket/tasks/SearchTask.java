@@ -64,13 +64,15 @@ public class SearchTask extends AsyncTask<String,Void,ArrayList<String>> {
 
             JSONArray resultsJson = similarJson.getJSONArray("Results");
 
-            for(int i = 0; i < resultsJson.length(); i++) {
-                JSONObject currentResult = resultsJson.getJSONObject(i);
+            if(resultsJson.length()>0){
+                int length  = resultsJson.length()>5? 5:resultsJson.length();
+                for(int i = 0; i < length; i++) {
+                    JSONObject currentResult = resultsJson.getJSONObject(i);
+                    interestsNames.add(currentResult.getString("Name"));
+                }
 
-                interestsNames.add(currentResult.getString("Name"));
+                Log.d("interestNames", interestsNames.toString());
             }
-
-            Log.d("interstNames", interestsNames.toString());
 
             return interestsNames;
         } catch (Exception e) {
