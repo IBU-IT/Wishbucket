@@ -23,10 +23,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import dev.ibu.wishbucket.R;
+import dev.ibu.wishbucket.tasks.SearchTask;
 
-public class RecommendationActivity extends AppCompatActivity {
+public class RecommendationActivity extends AppCompatActivity implements SearchTask.OnSearchTaskFinished {
 
     private AccessToken accessToken;
+    private SearchTask mSearchTask;
 
     private void setUpProfilePicture(){
         ProfilePictureView profilePictureView;
@@ -44,7 +46,8 @@ public class RecommendationActivity extends AppCompatActivity {
 
             rp.getBookRecommendations(books);
             rp.getMovieRecommendations(movies);
-            ArrayList<String> gameRecomendations =  rp.getGameRecommendations(games);
+            games.getJSONArray("data");
+            rp.getGameRecommendations(games, this);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -82,8 +85,23 @@ public class RecommendationActivity extends AppCompatActivity {
 
         getAccessToken();
         setUpProfilePicture();
-        getUserInterests("1046723582100092");
+        getUserInterests("1353906817961608");
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSearchTask.cancel();
+    }
+
+    @Override
+    public void onSuccess(ArrayList<String> interests) {
+        Log.d("onSucces","...");
+    }
+
+    @Override
+    public void onError() {
+
+    }
 }

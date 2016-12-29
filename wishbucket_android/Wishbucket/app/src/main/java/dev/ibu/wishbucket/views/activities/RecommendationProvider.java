@@ -12,64 +12,35 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import dev.ibu.wishbucket.tasks.SearchTask;
+
 /**
  * Created by dzananganic1 on 28/12/2016.
  */
 
 public class RecommendationProvider {
 
-    public ArrayList<String> getGameRecommendations(JSONObject gameInterests){
+    public void getGameRecommendations(JSONObject gameInterests, SearchTask.OnSearchTaskFinished onSearchTaskFinished){
         try {
             JSONArray interestsData = gameInterests.getJSONArray("data");
 
-            for(int i = 0; i < interestsData.length(); i++) {
+            for (int i = 0; i < interestsData.length(); i++) {
                 JSONObject currentInterest = interestsData.getJSONObject(i);
 
                 String currentInterestName = currentInterest.getString("name");
 
-                String url = "https://www.google.ba/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=games%20like%20";
+                String url = "https://www.google.ba/webhp?q=games+like+20minecraft";
 
-                currentInterestName = currentInterestName.replace(" ", "%20");
+                currentInterestName = currentInterestName.replace(" ", "+");
                 url += currentInterestName;
 
-                new Thread() {
-                    @Override
-                    public void run() {
-                        Document doc;
-
-                        try {
-                            doc = Jsoup.connect("https://www.google.com/search?as_q=&as_epq=%22Yorkshire+Capital%22+&as_oq=fraud+OR+allegations+OR+scam&as_eq=&as_nlo=&as_nhi=&lr=lang_en&cr=countryCA&as_qdr=all&as_sitesearch=&as_occt=any&safe=images&tbs=&as_filetype=&as_rights=").userAgent("Mozilla").ignoreHttpErrors(true).timeout(0).get();
-
-                            Elements links = doc.select("div[class=kltat]");
-
-                            ArrayList<String> interestsNames = new ArrayList<String>();
-
-                            for (Element link : links) {
-
-                                Elements titles = link.select("span");
-
-                                String title = titles.text();
-
-                                interestsNames.add(title);
-                            }
-
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }.start();
-
-
-
-
+                SearchTask.createTask(onSearchTaskFinished,url);
 
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (JSONException e){
+
         }
 
-        return null;
     }
 
     public JSONArray getMovieRecommendations(JSONObject movieInterests){
