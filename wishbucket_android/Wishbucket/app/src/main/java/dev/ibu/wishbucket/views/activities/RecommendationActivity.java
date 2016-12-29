@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dev.ibu.wishbucket.R;
 import dev.ibu.wishbucket.tasks.FetchImageTask;
@@ -35,6 +36,8 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
     private SearchTask mSearchTask;
     private FetchImageTask mFetchImageTask;
     public static ArrayList<ArrayList<String>> allInterests;
+    public static HashMap<String, String> interestsImages = new HashMap<String, String>();
+
 
     private void setUpProfilePicture(){
         ProfilePictureView profilePictureView;
@@ -121,8 +124,11 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
 
     @Override
     public void onImageSuccess(String[] images){
-        if(images!=null)
-            Log.d("IMAGES!", "Interest: "+images[0]+" URL: "+images[1]);
+        //on index 0 interest, on index 1 image
+
+        //key is interest, value is interest
+        interestsImages.put(images[0], images[1]);
+        Log.d("current interest images", interestsImages.toString());
     }
 
     @Override
