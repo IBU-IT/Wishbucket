@@ -6,5 +6,6 @@
     <string name="title_wishbucket">Wishbucket</string>
     <string name="message_gift">Gift. Be gifted.</string>
     <string name="title_activity_recommendation">RecommendationActivity</string>
+    <string name="title_activity_buy_product">BuyProductActivity</string>
 
 </resources>

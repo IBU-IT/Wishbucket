@@ -44,6 +44,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="dev.ibu.wishbucket.views.activities.HomeActivity" />
         </activity>
+        <activity
+            android:name=".views.activities.BuyProductActivity"
+            android:label="@string/title_activity_buy_product"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
