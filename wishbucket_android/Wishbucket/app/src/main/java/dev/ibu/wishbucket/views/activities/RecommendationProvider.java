@@ -20,7 +20,7 @@ import dev.ibu.wishbucket.tasks.SearchTask;
 
 public class RecommendationProvider {
 
-    public void getGameRecommendations(JSONObject gameInterests, SearchTask.OnSearchTaskFinished onSearchTaskFinished){
+    public void getRecommendations(String type, JSONObject gameInterests, SearchTask.OnSearchTaskFinished onSearchTaskFinished){
         try {
             JSONArray interestsData = gameInterests.getJSONArray("data");
 
@@ -29,7 +29,7 @@ public class RecommendationProvider {
 
                 String currentInterestName = currentInterest.getString("name");
 
-                String url = "https://www.google.ba/webhp?q=games+like+20minecraft";
+                String url = "https://www.tastekid.com/api/similar?k=253220-Wishbuck-AGREMPPW&type=" + type + "&q=";
 
                 currentInterestName = currentInterestName.replace(" ", "+");
                 url += currentInterestName;
@@ -41,15 +41,5 @@ public class RecommendationProvider {
 
         }
 
-    }
-
-    public JSONArray getMovieRecommendations(JSONObject movieInterests){
-
-        return null;
-    }
-
-    public JSONArray getBookRecommendations(JSONObject bookInterests){
-
-        return null;
     }
 }

@@ -11,7 +11,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -34,31 +39,46 @@ public class SearchTask extends AsyncTask<String,Void,ArrayList<String>> {
 
     @Override
     protected ArrayList<String> doInBackground(String... urls) {
-        Document doc;
         ArrayList<String> interestsNames = new ArrayList<String>();
 
+        URL url = null;
         try {
-            doc = Jsoup.connect(urls[0]).userAgent("Mozilla/5.0").timeout(5000).get();
+            url = new URL(urls[0]);
 
-            Elements links = doc.select("div.kltat > span");
 
-            for (Element link : links) {
-
-                Elements titles = link.select("span");
-
-                String title = titles.text();
-
-                interestsNames.add(link.text());
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setDoOutput(false);
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String content = "", line;
+            while ((line = rd.readLine()) != null) {
+                content += line + "\n";
             }
 
+            JSONObject contentJson = new JSONObject(content);
 
-        } catch (IOException e) {
+            JSONObject similarJson = contentJson.getJSONObject("Similar");
+
+            JSONArray resultsJson = similarJson.getJSONArray("Results");
+
+            for(int i = 0; i < resultsJson.length(); i++) {
+                JSONObject currentResult = resultsJson.getJSONObject(i);
+
+                interestsNames.add(currentResult.getString("Name"));
+            }
+
+            Log.d("interstNames", interestsNames.toString());
+
+            return interestsNames;
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return interestsNames;
+
+        return null;
     }
-
-
 
     @Override
     protected void onPostExecute(ArrayList<String> strings) {

@@ -39,15 +39,14 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
     private void parseJSONInterests(JSONObject interests){
         try {
             JSONObject books = interests.getJSONObject("books");
-            JSONObject movies = interests.getJSONObject("movies");
-            JSONObject games = interests.getJSONObject("games");
+//            JSONObject movies = interests.getJSONObject("movies");
+//            JSONObject games = interests.getJSONObject("games");
 
             RecommendationProvider rp = new RecommendationProvider();
 
-            rp.getBookRecommendations(books);
-            rp.getMovieRecommendations(movies);
-            games.getJSONArray("data");
-            rp.getGameRecommendations(games, this);
+            rp.getRecommendations("books", books, this);
+//            rp.getRecommendations("movies", movies, this);
+//            rp.getRecommendations("games", games, this);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -85,8 +84,9 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
 
         getAccessToken();
         setUpProfilePicture();
-        getUserInterests("1353906817961608");
 
+        //TODO: put userId from homeActivity here
+        getUserInterests("1046723582100092");
     }
 
     @Override
@@ -97,7 +97,8 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
 
     @Override
     public void onSuccess(ArrayList<String> interests) {
-        Log.d("onSucces","...");
+
+
     }
 
     @Override
