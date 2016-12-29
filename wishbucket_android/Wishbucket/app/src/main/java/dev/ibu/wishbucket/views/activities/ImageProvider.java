@@ -19,12 +19,6 @@ public class ImageProvider {
 
     public void getImages(ArrayList<ArrayList<String>> interests, FetchImageTask.OnFetchImageTaskFinished onFetchImageTaskFinished){
 
-//        for(ArrayList<String>interest: interests){
-//            String url = "http://pixplorer.co.uk/image?word="+interest;
-//            url = url.replace(" ", "+");
-//            FetchImageTask.createTask(onFetchImageTaskFinished,url);
-//        }
-
         for(ArrayList<String> subInterests : interests) {
             if(subInterests.size()>0){
                 String currentInterest = subInterests.get(0);
