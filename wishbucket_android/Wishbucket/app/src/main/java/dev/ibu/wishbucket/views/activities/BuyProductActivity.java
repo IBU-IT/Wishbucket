@@ -1,5 +1,6 @@
 package dev.ibu.wishbucket.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,7 +21,10 @@ public class BuyProductActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         WebView wV = (WebView)findViewById(R.id.webView);
-        String interest = "";
+        Intent intent = this.getIntent();
+        String interest = intent.getStringExtra("product_name");
+
+
         wV.loadUrl("https://www.amazon.com/s/ref=nb_sb_noss_2/157-2504715-8808307?url=search-alias%3Daps&field-keywords="+interest);
 
     }

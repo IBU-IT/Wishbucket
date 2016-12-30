@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     final static String USERID_KEY = "USERID_KEY";
 
     private AccessToken accessToken;
-    private ArrayList<FBUser> fbUsers;
+    public static ArrayList<FBUser> fbUsers;
     private String rawResponse;
 
     // JUST A SAMPLE RESPONSE
@@ -46,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
             "              } }\n" +
             "      },\n" +
             "      { \"birthday\" : \"10/10/1997\",\n" +
-            "        \"id\" : \"609557192483402\",\n" +
+            "        \"id\" : \"1046723582100092\",\n" +
             "        \"name\" : \"Dzanan Ganic\",\n" +
             "        \"picture\" : { \"data\" : { \"is_silhouette\" : false,\n" +
             "                \"url\" : \"https://scontent.fbeg2-1.fna.fbcdn.net/v/t1.0-1/p320x320/10358866_724200771019043_7719618574828729952_n.jpg?oh=c60780a3fe9512a4855d1da4047b7268&oe=58DB4C84\"\n" +

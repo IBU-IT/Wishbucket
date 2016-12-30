@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.ibu.wishbucket.R;
+import dev.ibu.wishbucket.models.FBUser;
 import dev.ibu.wishbucket.tasks.FetchImageTask;
 import dev.ibu.wishbucket.tasks.SearchTask;
 
@@ -55,6 +56,8 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
     public static HashMap<String, String> movieInterestsImages = new HashMap<String, String>();
     public static HashMap<String, String> bookInterestsImages = new HashMap<String, String>();
 
+    private String clickedUserId;
+    private FBUser clickedUser;
 
     private void setUpProfilePicture(){
         ProfilePictureView profilePictureView;
@@ -146,6 +149,10 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
         setSupportActionBar(toolbar);
 
 
+        Intent intent = this.getIntent();
+        clickedUserId = intent.getStringExtra(HomeActivity.USERID_KEY);
+        clickedUser = HomeActivity.fbUsers.get(0);
+
         rowsContainer = (LinearLayout) findViewById(R.id.rowsContainer);
 
         rowsContainer.removeAllViews();
@@ -154,42 +161,13 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
         gameInterests = new ArrayList<String>();
         movieInterests = new ArrayList<String>();
 
-        /*HashMap<String, String> cat1Dataset = new HashMap<>();
-        cat1Dataset.put("Battlefield 1.1", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat1Dataset.put("Battlefield 1.2", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat1Dataset.put("Battlefield 1.3", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat1Dataset.put("Battlefield 1.4", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat1Dataset.put("Battlefield 1.4", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-
-        HashMap<String, String> cat2Dataset = new HashMap<>();
-        cat2Dataset.put("Battlefield 2.1", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat2Dataset.put("Battlefield 2.2", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat2Dataset.put("Battlefield 2.3", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat2Dataset.put("Battlefield 2.4", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat2Dataset.put("Battlefield 2.5", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-
-        HashMap<String, String> cat3Dataset = new HashMap<>();
-        cat3Dataset.put("Battlefield 3.1", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat3Dataset.put("Battlefield 3.2", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat3Dataset.put("Battlefield 3.3", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat3Dataset.put("Battlefield 3.4", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-        cat3Dataset.put("Battlefield 3.5", "http://image.shopon.pk/cache/data/product-23534/1-500x500.jpg");
-
-        rowsContainer.removeAllViews();
-        addRow("Category 1", cat1Dataset);
-        addRow("Category 2", cat2Dataset);
-        addRow("Category 3", cat3Dataset);*/
-
-
-
-
         allInterests = new ArrayList<ArrayList<String>>();
 
         getAccessToken();
         setUpProfilePicture();
 
         //TODO: put userId from homeActivity here
-        getUserInterests("1046723582100092");
+        getUserInterests(clickedUser.id);
     }
 
     private void addRow(String category, HashMap<String, String> dataset) {
@@ -202,7 +180,7 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
         /* Cards */
         LinearLayout cardsContainer = (LinearLayout) row.findViewById(R.id.cardsContainer);
         if (cardsContainer != null) {
-            for (Map.Entry<String, String> p : dataset.entrySet()) {
+            for (final Map.Entry<String, String> p : dataset.entrySet()) {
                 ViewGroup card = (ViewGroup) LayoutInflater.from(RecommendationActivity.this).inflate(R.layout.item_card, cardsContainer, false);
 
                 ImageView image = (ImageView) card.findViewById(R.id.image);
@@ -211,6 +189,16 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
                 Picasso.with(this).load(p.getValue()).into(image);
 
                 title.setText(p.getKey());
+
+
+                card.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(RecommendationActivity.this, BuyProductActivity.class);
+                        intent.putExtra("product_name", p.getKey());
+                        startActivity(intent);
+                    }
+                });
 
                 cardsContainer.addView(card);
             }
