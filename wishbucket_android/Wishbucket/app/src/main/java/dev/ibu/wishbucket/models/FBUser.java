@@ -1,4 +1,4 @@
-package dev.ibu.wishbucket.views.models;
+package dev.ibu.wishbucket.models;
 
 
 import java.text.ParseException;
