@@ -32,13 +32,13 @@ public class FBUser {
 
     public String getDaysUntilBirthday() {
         if(this.daysUntilBirthday == 1)
-            return daysUntilBirthday + " day left";
+            return "in " + daysUntilBirthday + " day";
 
         else if(this.daysUntilBirthday == 0)
             return "Today!";
 
         else
-            return daysUntilBirthday + " days left";
+            return "in " + daysUntilBirthday + " days";
     }
 
     public static int calculateDaysUntilBirthday(Date birthday) {
