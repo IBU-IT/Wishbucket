@@ -59,10 +59,10 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
     private String clickedUserId;
     private FBUser clickedUser;
 
-    private void setUpProfilePicture(){
+    private void setUpProfilePicture(String userId){
         ProfilePictureView profilePictureView;
         profilePictureView = (ProfilePictureView) findViewById(R.id.profile_picture);
-        profilePictureView.setProfileId(Profile.getCurrentProfile().getId());
+        profilePictureView.setProfileId(userId);
     }
 
     private void parseJSONInterests(JSONObject interests){
@@ -151,7 +151,7 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
 
         Intent intent = this.getIntent();
         clickedUserId = intent.getStringExtra(HomeActivity.USERID_KEY);
-        clickedUser = HomeActivity.fbUsers.get(0);
+        clickedUser = getUserById(clickedUserId);
 
         rowsContainer = (LinearLayout) findViewById(R.id.rowsContainer);
 
@@ -164,7 +164,7 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
         allInterests = new ArrayList<ArrayList<String>>();
 
         getAccessToken();
-        setUpProfilePicture();
+        setUpProfilePicture(clickedUser.id);
 
         //TODO: put userId from homeActivity here
         getUserInterests(clickedUser.id);
@@ -279,6 +279,14 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
             fetchImages();
         }
 
+    }
+
+    private FBUser getUserById(String userId) {
+        for (FBUser u: HomeActivity.fbUsers) {
+            if(u.id.equals(userId))
+                return u;
+        }
+        return null;
     }
 
     @Override
