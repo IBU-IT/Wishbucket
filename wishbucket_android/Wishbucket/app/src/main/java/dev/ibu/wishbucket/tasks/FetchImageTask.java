@@ -41,10 +41,11 @@ public class FetchImageTask extends AsyncTask<String,Void,String[]> {
 
         URL url = null;
         String interestName = "";
+        String interestType = "";
         try {
             url = new URL(urls[0]);
             interestName = urls[1];
-
+            interestType = urls[2];
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -64,9 +65,10 @@ public class FetchImageTask extends AsyncTask<String,Void,String[]> {
 
             String contentUrl = content.substring(beginIndex, endIndex);
 
-            String[] interestImagePair = new String[2];
+            String[] interestImagePair = new String[3];
             interestImagePair[0] = interestName;
             interestImagePair[1] = contentUrl;
+            interestImagePair[2] = interestType;
 
             return interestImagePair;
 

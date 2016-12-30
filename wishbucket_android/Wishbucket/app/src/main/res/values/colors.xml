@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="divider">#10000000</color>
+    <color name="background_window">#eeeeee</color>
+    <color name="background_card_empty_state">#dddddd</color>
 </resources>

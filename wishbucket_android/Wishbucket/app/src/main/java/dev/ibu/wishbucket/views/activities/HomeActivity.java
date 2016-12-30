@@ -120,6 +120,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(HomeActivity.this, RecommendationActivity.class);
                     intent.putExtra(USERID_KEY, u.id);
+                    intent.putExtra(MainActivity.ACCESS_TOKEN_KEY, accessToken);
                     startActivity(intent);
                 }
             });
