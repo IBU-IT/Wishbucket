@@ -210,8 +210,11 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mSearchTask.cancel();
-        mFetchImageTask.cancel();
+
+        if(mSearchTask!=null)
+            mSearchTask.cancel();
+        if(mFetchImageTask!=null)
+            mFetchImageTask.cancel();
     }
 
     @Override

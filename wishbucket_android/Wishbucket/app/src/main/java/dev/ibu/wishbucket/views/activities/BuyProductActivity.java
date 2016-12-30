@@ -24,7 +24,8 @@ public class BuyProductActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         String interest = intent.getStringExtra("product_name");
 
-
+        wV.getSettings().setLoadWithOverviewMode(true);
+        wV.getSettings().setUseWideViewPort(true);
         wV.loadUrl("https://www.amazon.com/s/ref=nb_sb_noss_2/157-2504715-8808307?url=search-alias%3Daps&field-keywords="+interest);
 
     }

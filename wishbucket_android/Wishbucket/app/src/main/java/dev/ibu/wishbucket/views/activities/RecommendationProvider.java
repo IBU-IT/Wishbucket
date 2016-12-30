@@ -31,7 +31,7 @@ public class RecommendationProvider {
 
                 String currentInterestName = currentInterest.getString("name");
 
-                String url = "https://www.tastekid.com/api/similar?k=253364-Dzasddsa-U11JI8O9&type=" + type + "&q=";
+                String url = "https://www.tastekid.com/api/similar?k=253362-Dasadsas-5H3WYM9I&type=" + type + "&q=";
 
                 currentInterestName = currentInterestName.replace(" ", "+");
                 url += currentInterestName;
