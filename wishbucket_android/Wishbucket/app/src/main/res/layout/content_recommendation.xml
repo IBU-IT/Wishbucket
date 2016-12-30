@@ -7,17 +7,10 @@
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingTop="0dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="dev.ibu.wishbucket.views.activities.RecommendationActivity"
     tools:showIn="@layout/activity_recommendation">
-
-    <com.facebook.login.widget.ProfilePictureView
-        android:id="@+id/profile_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp" />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -25,8 +18,53 @@
         android:layout_height="wrap_content"
         android:background="@color/background_window"
         android:layout_marginLeft="20dp">
-
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_above="@+id/rowsContainer"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="-5dp"
+        android:padding="20dp"
+        android:background="#ededed">
+
+        <com.facebook.login.widget.ProfilePictureView
+            android:id="@+id/profile_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="40dp"
+            android:text="Large Text"
+            android:id="@+id/nameTextView"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/profile_picture"
+            android:layout_toEndOf="@+id/profile_picture"
+            android:layout_marginTop="-7dp"
+            android:layout_marginLeft="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/birthdayTextView"
+            android:layout_below="@+id/nameTextView"
+            android:layout_alignLeft="@+id/nameTextView"
+            android:layout_alignStart="@+id/nameTextView"
+            android:layout_marginTop="5dp"
+            android:textSize="25dp" />
+
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/rowsContainer"
@@ -39,10 +77,8 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:showDividers="middle"
         tools:context="tr.xip.rowswithimages.MainActivity"
-        android:layout_below="@+id/profile_picture"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true" />
-
 
 </RelativeLayout>

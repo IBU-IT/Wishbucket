@@ -59,6 +59,9 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
     private String clickedUserId;
     private FBUser clickedUser;
 
+    TextView nameTextView;
+    TextView birthdayTextView;
+
     private void setUpProfilePicture(String userId){
         ProfilePictureView profilePictureView;
         profilePictureView = (ProfilePictureView) findViewById(R.id.profile_picture);
@@ -148,10 +151,15 @@ public class RecommendationActivity extends AppCompatActivity implements SearchT
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        nameTextView = (TextView)findViewById(R.id.nameTextView);
+        birthdayTextView = (TextView)findViewById(R.id.birthdayTextView);
 
         Intent intent = this.getIntent();
         clickedUserId = intent.getStringExtra(HomeActivity.USERID_KEY);
         clickedUser = getUserById(clickedUserId);
+
+        nameTextView.setText(clickedUser.name);
+        birthdayTextView.setText("Birthday is "+clickedUser.getDaysUntilBirthday());
 
         rowsContainer = (LinearLayout) findViewById(R.id.rowsContainer);
 

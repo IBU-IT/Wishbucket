@@ -5,7 +5,7 @@
     <string name="title_activity_home">Home</string>
     <string name="title_wishbucket">Wishbucket</string>
     <string name="message_gift">Gift. Be gifted.</string>
-    <string name="title_activity_recommendation">RecommendationActivity</string>
-    <string name="title_activity_buy_product">BuyProductActivity</string>
+    <string name="title_activity_recommendation">Recommendations</string>
+    <string name="title_activity_buy_product">Buy Product</string>
 
 </resources>
