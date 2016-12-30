@@ -3,14 +3,11 @@ package dev.ibu.wishbucket.views.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,26 +15,20 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
-import com.facebook.GraphRequest.GraphJSONObjectCallback;
 import com.facebook.GraphResponse;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.Console;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import dev.ibu.wishbucket.R;
-import dev.ibu.wishbucket.views.models.FBUser;
+import dev.ibu.wishbucket.models.FBUser;
+import dev.ibu.wishbucket.tasks.DownloadAndSetImageTask;
 
 public class HomeActivity extends AppCompatActivity {
     final static String USERID_KEY = "USERID_KEY";
@@ -45,15 +36,45 @@ public class HomeActivity extends AppCompatActivity {
     private AccessToken accessToken;
     private ArrayList<FBUser> fbUsers;
     private String rawResponse;
-    private String rawResponseTest = "{\"data\":[{\"id\":\"1353906817961608\",\"name\":\"Kemal Mustafic\",\n" +
-            "      \"birthday\": \"06/25/1994\"}, {\"id\":\"1353906817961608\",\"name\":\"Kemal Mustafic\",\n" +
-            "      \"birthday\": \"06/26/1994\"}, {\"id\":\"1353906817961608\",\"name\":\"Kemal Mustafic\",\n" +
-            "      \"birthday\": \"12/31/1994\", \"cover\": {\n" +
-            "        \"id\": \"1835369660079841\",\n" +
-            "        \"offset_y\": 0,\n" +
-            "        \"source\": \"https://scontent.xx.fbcdn.net/v/t1.0-9/s720x720/15134544_1835369660079841_3566795614903459210_n.jpg?oh=7aa5d869ca91ddc92ee0248bd1eefbbf&oe=58E0A9E0\"\n" +
-            "      }}],\"paging\":{\"cursors\":{\"before\":\"QVFIUkJVV2lxcVlJcW9SenhsWjJRbWdaY0h2VERWVkVCNjJUUTBxb2ltRXlnRDB1b2hCZAml1MFZAxVmxCUnk4b2pYbWQ0UE04X2s0SzlvOU9RMlA5YzZA5Sk9B\",\"after\":\"QVFIUkJVV2lxcVlJcW9SenhsWjJRbWdaY0h2VERWVkVCNjJUUTBxb2ltRXlnRDB1b2hCZAml1MFZAxVmxCUnk4b2pYbWQ0UE04X2s0SzlvOU9RMlA5YzZA5Sk9B\"}},\"summary\":{\"total_count\":77}}";
 
+    // JUST A SAMPLE RESPONSE
+    private String rawResponseTest = "{ \"data\" : [ {\"birthday\" : \"09/3/1997\", \n" +
+            "        \"id\" : \"991778467507780\",\n" +
+            "        \"name\" : \"Kemal Mustafic\",\n" +
+            "        \"picture\" : { \"data\" : { \"is_silhouette\" : false,\n" +
+            "                \"url\" : \"https://scontent.fbeg2-1.fna.fbcdn.net/v/t1.0-1/p320x320/1535438_719852851367011_523618052_n.jpg?oh=0b381e293f674aa480c8afb4c91440d0&oe=592480EB\"\n" +
+            "              } }\n" +
+            "      },\n" +
+            "      { \"birthday\" : \"10/10/1997\",\n" +
+            "        \"id\" : \"609557192483402\",\n" +
+            "        \"name\" : \"Dzanan Ganic\",\n" +
+            "        \"picture\" : { \"data\" : { \"is_silhouette\" : false,\n" +
+            "                \"url\" : \"https://scontent.fbeg2-1.fna.fbcdn.net/v/t1.0-1/p320x320/10358866_724200771019043_7719618574828729952_n.jpg?oh=c60780a3fe9512a4855d1da4047b7268&oe=58DB4C84\"\n" +
+            "              } }\n" +
+            "      },\n" +
+            "      { \"birthday\" : \"07/25/1994\",\n" +
+            "        \"id\" : \"1657271004556375\",\n" +
+            "        \"name\" : \"Bećir Isakovic\",\n" +
+            "        \"picture\" : { \"data\" : { \"is_silhouette\" : false,\n" +
+            "                \"url\" : \"https://scontent.fbeg2-1.fna.fbcdn.net/v/t31.0-8/14939941_1828508317432642_1695792081257066790_o.jpg?oh=dc0d7384657ad3301828ba0a0eb26e03&oe=58E32CC2\"\n" +
+            "              } }\n" +
+            "      },\n" +
+            "      { \"birthday\" : \"10/1/1995\",\n" +
+            "        \"id\" : \"100000026280931\",\n" +
+            "        \"name\" : \"Amil Cohadzic\",\n" +
+            "        \"picture\" : { \"data\" : { \"is_silhouette\" : false,\n" +
+            "                \"url\" : \"https://scontent.fbeg2-1.fna.fbcdn.net/v/t31.0-1/c85.156.576.576/s320x320/13403258_1204760626201469_8236912033376312545_o.jpg?oh=09da890d016f47653bf02d9497605af0&oe=5920E166\"\n" +
+            "              } }\n" +
+            "      },\n" +
+            "      { \"birthday\" : \"09/09/1996\",\n" +
+            "        \"id\" : \"1657271004556375\",\n" +
+            "        \"name\" : \"Haris Botic\",\n" +
+            "        \"picture\" : { \"data\" : { \"is_silhouette\" : false,\n" +
+            "                \"url\" : \"https://scontent.fbeg2-1.fna.fbcdn.net/v/t1.0-1/p320x320/13006494_100257377052409_3635235463199482252_n.jpg?oh=02b854441a8d93cc3551ee39143ba525&oe=592087E5\"\n" +
+            "              } }\n" +
+            "      }\n" +
+            "    ]\n" +
+            "}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,birthday");
+        parameters.putString("fields", "id,name,birthday,picture");
         parameters.putString("limit", "10");
         request.setParameters(parameters);
         request.executeAsync();
@@ -95,10 +116,14 @@ public class HomeActivity extends AppCompatActivity {
                 String id = data.has("id")? data.getString("id") : null;
                 String name = data.has("name")? data.getString("name") : null;
                 String birthday = data.has("birthday")? data.getString("birthday") : null;
+
                 String cover = null;
-                if(data.has("cover")) {
-                    JSONObject coverObj = data.getJSONObject("cover");
-                    cover = coverObj.has("source") ? coverObj.getString("source") : null;
+                if(data.has("picture")) {
+                    JSONObject pictureObj = data.getJSONObject("picture");
+                    if(pictureObj.has("data")) {
+                        JSONObject pDataObj = pictureObj.getJSONObject("data");
+                        cover = pDataObj.has("url") ? pDataObj.getString("url") : null;
+                    }
                 }
 
                 fbUsers.add(new FBUser(id, name, birthday, cover));
@@ -132,7 +157,7 @@ public class HomeActivity extends AppCompatActivity {
 
             ImageView cover = (ImageView) card.findViewById(R.id.cover);
             if(u.coverUrl != null)
-                new DownloadAndSetImageTask(cover).execute("https://scontent.xx.fbcdn.net/v/t1.0-9/s720x720/15134544_1835369660079841_3566795614903459210_n.jpg?oh=7aa5d869ca91ddc92ee0248bd1eefbbf&oe=58E0A9E0");
+                new DownloadAndSetImageTask(cover).execute(u.coverUrl);
 
             layout.addView(card);
         }
@@ -145,31 +170,6 @@ public class HomeActivity extends AppCompatActivity {
                 return fbUser.daysUntilBirthday - t1.daysUntilBirthday;
             }
         });
-    }
-
-    private class DownloadAndSetImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadAndSetImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 }
 
